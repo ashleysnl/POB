@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <title>Offshore Rotation Rush</title>
+  <link rel="stylesheet" href="src/styles.css" />
+</head>
+<body>
+  <main id="app">
+    <section id="hud" aria-label="Game status">
+      <div class="hud-row">
+        <span id="hudBacklog">Backlog: 24</span>
+        <span id="hudHappiness">Happiness: 85</span>
+        <span id="hudProduction">Production: 85</span>
+        <span id="hudWeather">Weather: Fair</span>
+        <span id="hudTimer">Shift: 09:00</span>
+      </div>
+      <div class="hud-row">
+        <span id="hudDay">Day 1</span>
+        <span id="hudScore">Score: 0</span>
+        <span id="hudBest">Best: 0</span>
+        <button id="btnBoat" type="button">Call Boat</button>
+        <button id="btnSound" type="button">Sound: On</button>
+        <button id="btnDaily" type="button">Daily Challenge</button>
+      </div>
+    </section>
+
+    <canvas id="game" width="320" height="180" aria-label="Offshore Rotation Rush game canvas"></canvas>
+
+    <section id="overlay" aria-live="polite">
+      <h1>OFFSHORE ROTATION RUSH</h1>
+      <p id="overlayMessage">Land the chopper, send the crew home, keep everyone right some happy.</p>
+      <div class="overlay-buttons">
+        <button id="btnStart" type="button">Start Shift</button>
+        <button id="btnRestart" type="button" hidden>Restart</button>
+        <button id="btnNext" type="button" hidden>Next Shift</button>
+      </div>
+      <p class="controls">
+        Desktop: WASD/Arrows move, Space hover assist, L lights, B boat, P pause.
+      </p>
+      <p class="controls">Mobile: left stick move, right buttons hover/land, Boat on HUD.</p>
+    </section>
+
+    <section id="mobileControls" aria-label="Touch controls">
+      <div id="stickZone" class="touch-zone">
+        <div id="stickBase"></div>
+        <div id="stickKnob"></div>
+      </div>
+      <div class="touch-buttons">
+        <button id="btnHover" type="button">Hover</button>
+        <button id="btnLand" type="button">Land</button>
+      </div>
+    </section>
+
+    <section id="toast" aria-live="polite"></section>
+  </main>
+
+  <script src="src/utils.js"></script>
+  <script src="src/sprites.js"></script>
+  <script src="src/input.js"></script>
+  <script src="src/audio.js"></script>
+  <script src="src/game.js"></script>
+  <script src="src/render.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
