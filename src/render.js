@@ -8,6 +8,8 @@
     S.pixel(ctx, 0, 40, 320, 40, p.sky1);
     S.pixel(ctx, 0, 80, 320, 40, "#8fc0df");
     S.pixel(ctx, 0, 120, 320, 60, p.sea2);
+    S.pixel(ctx, 0, 108, 320, 4, "#9ac2de");
+    S.pixel(ctx, 0, 112, 320, 2, "#7ea9cd");
 
     for (var i = 0; i < 6; i++) {
       var cx = (i * 63 + game.time * (2 + i * 0.1)) % 360 - 40;
@@ -17,6 +19,12 @@
 
     S.drawOcean(ctx, game);
     S.drawPlatform(ctx, game);
+
+    ctx.fillStyle = "rgba(18,30,45,0.16)";
+    ctx.fillRect(0, 0, 320, 6);
+    ctx.fillRect(0, 174, 320, 6);
+    ctx.fillRect(0, 0, 6, 180);
+    ctx.fillRect(314, 0, 6, 180);
   }
 
   function drawBoatScene(ctx, game) {

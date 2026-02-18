@@ -43,33 +43,78 @@
 
   function drawPlatform(ctx, state) {
     var bob = Math.sin(state.time * 0.35) * 1.5;
-    var baseY = 88 + bob;
-    px(ctx, 176, baseY, 110, 32, P.platformLight);
-    px(ctx, 170, baseY + 20, 120, 16, P.platformMid);
+    var baseY = 80 + bob;
+    var deckY = baseY + 19;
 
-    px(ctx, 198, baseY + 35, 16, 42, P.platformDark);
-    px(ctx, 238, baseY + 35, 16, 42, P.platformDark);
-    px(ctx, 210, baseY + 35, 12, 44, P.platformMid);
+    px(ctx, 166, baseY + 16, 134, 8, "#e4e9ef");
+    px(ctx, 160, baseY + 24, 142, 22, P.platformLight);
+    px(ctx, 162, baseY + 44, 138, 7, P.platformMid);
+    px(ctx, 170, baseY + 51, 116, 6, P.platformDark);
 
-    px(ctx, 174, baseY + 8, 50, 8, P.helideck);
+    for (var r = 0; r < 13; r++) {
+      var rx = 168 + r * 10;
+      px(ctx, rx, baseY + 47 + (r % 2), 1, 6, "#cad0d8");
+      if (r < 12) {
+        px(ctx, rx + 2, baseY + 49 + (r % 2), 6, 1, "#9da7b3");
+      }
+    }
+
+    px(ctx, 173, deckY - 2, 58, 10, P.helideck);
     ctx.strokeStyle = P.helideckMark;
     ctx.lineWidth = 1;
-    ctx.strokeRect(182, baseY + 10, 33, 5);
-    px(ctx, 196, baseY + 10, 3, 5, P.helideckMark);
-    px(ctx, 205, baseY + 10, 3, 5, P.helideckMark);
+    ctx.strokeRect(184, deckY, 40, 6);
+    px(ctx, 196, deckY, 3, 6, P.helideckMark);
+    px(ctx, 208, deckY, 3, 6, P.helideckMark);
 
-    px(ctx, 246, baseY - 4, 4, 18, P.crane);
-    px(ctx, 250, baseY - 2, 22, 3, P.crane);
+    px(ctx, 223, deckY - 2, 64, 4, "#d2d8df");
+    for (var w = 0; w < 10; w++) {
+      px(ctx, 224 + w * 6, deckY + 2, 4, 2, "#9ba4b0");
+    }
+
+    px(ctx, 208, baseY - 18, 16, 35, P.platformDark);
+    px(ctx, 240, baseY - 18, 16, 35, P.platformDark);
+    px(ctx, 210, baseY - 24, 12, 7, "#8c939f");
+    px(ctx, 242, baseY - 24, 12, 7, "#8c939f");
+
+    for (var m = 0; m < 8; m++) {
+      px(ctx, 210 + (m % 2) * 6, baseY - 16 + m * 4, 10, 1, "#a9b0bb");
+      px(ctx, 242 + (m % 2) * 6, baseY - 16 + m * 4, 10, 1, "#a9b0bb");
+    }
+
+    for (var s = 0; s < 14; s++) {
+      px(ctx, 175 + s * 7, baseY + 29 + (s % 3), 2, 2, "#6f7682");
+    }
+
+    px(ctx, 228, baseY - 12, 4, 30, P.crane);
+    for (var c = 0; c < 14; c++) {
+      px(ctx, 232 + c * 2, baseY - 11 + c, 2, 1, "#c8cfd8");
+    }
+
+    px(ctx, 270, baseY - 18, 3, 28, "#aeb6bf");
+    for (var c2 = 0; c2 < 15; c2++) {
+      px(ctx, 273 + c2 * 2, baseY + 9 - c2, 2, 1, "#9ea6b2");
+    }
 
     if (state.hazards.craneSwing) {
       var swing = Math.sin(state.time * 8) * 10;
-      px(ctx, 266 + swing, baseY + 2, 8, 2, P.warning);
+      px(ctx, 296 + swing, baseY - 6, 8, 2, P.warning);
     } else {
-      px(ctx, 268, baseY + 2, 8, 2, P.platformDark);
+      px(ctx, 300, baseY - 6, 8, 2, P.platformDark);
     }
 
-    px(ctx, 168, baseY + 8, 4, 3, state.landingLights ? P.green : P.warning);
-    px(ctx, 224, baseY + 8, 4, 3, state.landingLights ? P.green : P.warning);
+    px(ctx, 167, deckY, 4, 3, state.landingLights ? P.green : P.warning);
+    px(ctx, 227, deckY, 4, 3, state.landingLights ? P.green : P.warning);
+
+    px(ctx, 194, baseY + 57, 20, 38, "#333840");
+    px(ctx, 234, baseY + 57, 20, 38, "#333840");
+    px(ctx, 215, baseY + 57, 14, 40, "#4f5864");
+
+    px(ctx, 188, baseY + 94, 74, 5, "#6b717c");
+    px(ctx, 182, baseY + 99, 86, 3, "#4f565f");
+
+    ctx.fillStyle = "rgba(15,35,65,0.28)";
+    ctx.fillRect(193, 122, 60, 54);
+    ctx.fillRect(204, 134, 20, 28);
 
     if (state.day >= 3) {
       px(ctx, 32, 36, 4, 28, P.platformDark);

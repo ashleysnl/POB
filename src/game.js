@@ -536,7 +536,7 @@
 
   Game.prototype.getHelideck = function () {
     var bob = Math.sin(this.time * 0.35) * 1.5;
-    return { x: 198, y: 99 + bob, r: 11 };
+    return { x: 202, y: 99 + bob, r: 12 };
   };
 
   Game.prototype.updateBoatGame = function (dt, input) {

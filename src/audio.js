@@ -3,7 +3,14 @@
     this.ctx = null;
     this.master = null;
     this.rotorOsc = null;
+    this.rotorSub = null;
     this.rotorGain = null;
+    this.windOsc = null;
+    this.windGain = null;
+    this.seaOsc = null;
+    this.seaGain = null;
+    this.boatOsc = null;
+    this.boatGain = null;
     this.enabled = true;
     this.started = false;
   }
@@ -28,12 +35,44 @@
 
     this.rotorOsc = this.ctx.createOscillator();
     this.rotorOsc.type = "sawtooth";
-    this.rotorOsc.frequency.value = 55;
+    this.rotorOsc.frequency.value = 50;
+    this.rotorSub = this.ctx.createOscillator();
+    this.rotorSub.type = "triangle";
+    this.rotorSub.frequency.value = 24;
     this.rotorGain = this.ctx.createGain();
     this.rotorGain.gain.value = 0.0;
     this.rotorOsc.connect(this.rotorGain);
+    this.rotorSub.connect(this.rotorGain);
     this.rotorGain.connect(this.master);
     this.rotorOsc.start();
+    this.rotorSub.start();
+
+    this.windOsc = this.ctx.createOscillator();
+    this.windOsc.type = "triangle";
+    this.windOsc.frequency.value = 150;
+    this.windGain = this.ctx.createGain();
+    this.windGain.gain.value = 0.0;
+    this.windOsc.connect(this.windGain);
+    this.windGain.connect(this.master);
+    this.windOsc.start();
+
+    this.seaOsc = this.ctx.createOscillator();
+    this.seaOsc.type = "sine";
+    this.seaOsc.frequency.value = 44;
+    this.seaGain = this.ctx.createGain();
+    this.seaGain.gain.value = 0.0;
+    this.seaOsc.connect(this.seaGain);
+    this.seaGain.connect(this.master);
+    this.seaOsc.start();
+
+    this.boatOsc = this.ctx.createOscillator();
+    this.boatOsc.type = "square";
+    this.boatOsc.frequency.value = 78;
+    this.boatGain = this.ctx.createGain();
+    this.boatGain.gain.value = 0.0;
+    this.boatOsc.connect(this.boatGain);
+    this.boatGain.connect(this.master);
+    this.boatOsc.start();
 
     this.started = true;
   };
@@ -53,10 +92,26 @@
       return;
     }
     var now = this.ctx.currentTime;
-    var targetHz = 48 + speedNorm * 42 + (hovering ? 16 : 0);
-    var targetVol = 0.03 + speedNorm * 0.08;
+    var targetHz = 46 + speedNorm * 46 + (hovering ? 14 : 0);
+    var targetVol = 0.025 + speedNorm * 0.085;
     this.rotorOsc.frequency.linearRampToValueAtTime(targetHz, now + 0.07);
+    this.rotorSub.frequency.linearRampToValueAtTime(20 + speedNorm * 18, now + 0.08);
     this.rotorGain.gain.linearRampToValueAtTime(targetVol, now + 0.07);
+  };
+
+  AudioSystem.prototype.updateAmbience = function (weather, inBoatMode) {
+    if (!this.started || !this.enabled) {
+      return;
+    }
+    var now = this.ctx.currentTime;
+    var wind = weather.wind || 0;
+    var sea = weather.sea || 0;
+    this.windOsc.frequency.linearRampToValueAtTime(130 + wind * 210, now + 0.12);
+    this.windGain.gain.linearRampToValueAtTime(0.004 + wind * 0.02, now + 0.12);
+    this.seaOsc.frequency.linearRampToValueAtTime(40 + sea * 26, now + 0.12);
+    this.seaGain.gain.linearRampToValueAtTime(0.006 + sea * 0.018, now + 0.12);
+    this.boatGain.gain.linearRampToValueAtTime(inBoatMode ? 0.028 + sea * 0.02 : 0.0, now + 0.08);
+    this.boatOsc.frequency.linearRampToValueAtTime(70 + sea * 24, now + 0.08);
   };
 
   AudioSystem.prototype.beep = function (freq, dur, type, gain) {
@@ -83,6 +138,11 @@
 
   AudioSystem.prototype.warning = function () {
     this.beep(220, 0.15, "square", 0.06);
+  };
+
+  AudioSystem.prototype.impact = function () {
+    this.beep(140, 0.12, "sawtooth", 0.09);
+    setTimeout(this.beep.bind(this, 95, 0.14, "square", 0.06), 60);
   };
 
   AudioSystem.prototype.success = function () {

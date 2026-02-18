@@ -104,6 +104,7 @@
   function startCampaign() {
     var modeDay = game.mode === "win" ? game.day : 1;
     game.startShift({ day: modeDay, dailyMode: false, seed: seed });
+    audio.beep(610, 0.09, "triangle", 0.06);
     hideOverlay();
   }
 
@@ -112,6 +113,7 @@
     seed = dSeed;
     game.startShift({ day: 1, dailyMode: true, seed: dSeed });
     game.pushMessage("Daily challenge seed: " + dSeed);
+    audio.beep(660, 0.1, "triangle", 0.06);
     hideOverlay();
   }
 
@@ -176,6 +178,7 @@
 
     var speedNorm = Math.min(1, Math.hypot(game.heli.vx, game.heli.vy) / 48);
     audio.updateRotor(speedNorm, input.isHovering());
+    audio.updateAmbience(game.weather, game.mode === "boat");
 
     if (game.messages.length > 0) {
       var latest = game.messages[game.messages.length - 1].text;
@@ -183,6 +186,9 @@
         lastAudioMessage = latest;
         if (/warning|grounded|incident|hazard|thick|iceberg/i.test(latest)) {
           audio.warning();
+        }
+        if (/hard landing|too hot|clipped|failed/i.test(latest)) {
+          audio.impact();
         }
         if (/landed safe|clean landing|sent home|boat made dock/i.test(latest)) {
           audio.landingChime();
